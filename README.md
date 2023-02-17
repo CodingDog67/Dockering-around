@@ -32,3 +32,12 @@ name images by: \
 name : tag principle, name defines a group of possible mor specialized images e.g python, tag defines a specialized image within group of images e.g python version \
 New containers can be run by defining the tag instead of image ID
 
+re-tagging images by 
+**docker tag old_name:tag new_name**
+creates clone of old images with new name but will not delete old image
+
+### Pushing docker images on docker hub
+1) Log into docker hub and create a repo there, repo = images
+2) Rename image to repo name 
+3) Log in to docker as admin of the repo 
+4) Use the provided push command on docker hub locally
