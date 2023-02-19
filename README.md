@@ -64,12 +64,13 @@ Volumes = folders on the host machine which are mounted (made available) into co
 Connect a folder outside the container with a folder inside, changes are made to either a reflected in both. Volumes but only named, persist if a container is shut down.
 
 See the volumes: 
-    **docker volume ls**
+
+    docker volume ls
 
 Create a named volume during first-time running a container : \
 
-    **docker run -d -p 3000:80 --rm --name feedback-app -v saved_feedback:/app/feedback feedback**
+    docker run -d -p 3000:80 --rm --name feedback-app -v saved_feedback:/app/feedback feedback
 
 Removing Anonymous Volumes: \
 
-    **docker volume rm VOL_NAME** or **docker volume prune**
+    docker volume rm VOL_NAME** or **docker volume prune
