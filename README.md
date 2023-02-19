@@ -67,7 +67,9 @@ See the volumes:
     **docker volume ls**
 
 Create a named volume during first-time running a container : \
+
     **docker run -d -p 3000:80 --rm --name feedback-app -v saved_feedback:/app/feedback feedback**
 
 Removing Anonymous Volumes: \
+
     **docker volume rm VOL_NAME** or **docker volume prune**
