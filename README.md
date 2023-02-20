@@ -47,7 +47,7 @@ creates clone of old images with new name but will not delete old image
 To pull simple go **docker pull name** will always pull the latest image of this repo, can also do docker run if the image isnt there locally docker will check on docker hub
 
 
-## 2) Data Management and Volumes
+## 2) Data Management, Volumes and Bind Mounts
 
     Learning how to create Volume and manage data and data survival 
 
@@ -58,8 +58,12 @@ Temp app data (user input) is stored in containers with read/write access. Dynam
 Permanent App data (User accounts eg)fetched/produced in running container, store in files/database/ most not be lost if 
 container stops/restarts, read/write, stored with container + volumes
 
-Check Data_volumes_feedback_app to see an example \
+### Volumes
+Managed by Docker, used fot persistent data one does not need to edit directly, e.g user accounts, feedback text etc
+
+Check Data_volumes_feedback_app to see an example for volumes \
 Problem if container is removed, all created data in the container is lost, using volumes structures for this problem. 
+
 Volumes = folders on the host machine which are mounted (made available) into containers  /some_path(host) -> /app/user_data
 Connect a folder outside the container with a folder inside, changes are made to either a reflected in both. Volumes but only named, persist if a container is shut down.
 
@@ -67,10 +71,23 @@ See the volumes:
 
     docker volume ls
 
-Create a named volume during first-time running a container : \
+Create a named volume during first-time running a container: \
 
     docker run -d -p 3000:80 --rm --name feedback-app -v saved_feedback:/app/feedback feedback
 
 Removing Anonymous Volumes: \
 
     docker volume rm VOL_NAME** or **docker volume prune
+
+### Bind Mounts
+Managed by yourself = you define folder/path on host machine \
+Used for presistent/editable data e.g source code
+
+Create a bind mount during via run container command: \
+
+    docker run -d -p 3000:80 --rm --name feedback-app 
+    -v "absolute_path_to_project_folder:/app" feedback
+
+    shortcut: -v "%cd%":/app
+   
+This will override everything in the container app folder with the local machine folder, but that also means everything in the docker file e.g run npm install is rendered useless 
