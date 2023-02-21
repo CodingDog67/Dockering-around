@@ -33,3 +33,6 @@ CMD ["node", "server.js"]
 # docker attach running_container_name will attach
 # docker logs running_container_name is an option too 
 
+# copy into container by "docker cp dummy/. container_name:/folder_name"   this will create a folder if it does not already exist
+# makes sense in some few selected cases like updating config file for a web server
+# reverse order to copy from container folder to local host machine for example generated log files
