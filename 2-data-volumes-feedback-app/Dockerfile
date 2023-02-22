@@ -8,7 +8,12 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 80
+ARG DEFAULT_PORT = 80
+
+ENV PORT $DEFAULT_PORT
+
+#specify environment variable by marking it with a $ before 
+EXPOSE $PORT
 
 # VOLUME ["folder inside container"] Anynomous volume, no idea where the data is on host machine (which is intentinally since we
 # should not mess with the data ourselved), managed by docker

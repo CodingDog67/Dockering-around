@@ -105,12 +105,35 @@ Indept tutorial with commented sample codes on how to use docker
 
    Second **-v "absolute_path_to_project_folder:/app"** This will override everything in the container app folder with the local machine folder. We use it to sync the code in real time e.g when we change the feedback.html and reload we see the change immediately. But that also means everything in the docker file e.g run npm install is rendered useless.
 
-   Third **-v /app/node_modules image_name** To counter the effect of the bind mount previously mentioned, have an anonymous volume running in parallel, longer path wins and gets priority. This will ensure that the npm install content stays alive. 
-
+   Third **-v /app/node_modules image_name** To counter the effect of the bind mount previously mentioned, have an anonymous volume running in parallel, longer path wins and gets priority. This will ensure that the npm install content stays alive. But this must be specified in the docker run command not the docker file itself then.
+  
 
    ### Side notes
    Code changes to the .js file are not reflected in real time, due to a nodejs specific problem, visit **server.js** and **package.json** to see. In short use a package which watches the file system and restarts the node server whenever sth changes. Add to jsonfile: 
 
         "devDependencies": {"nodemon":"2.0.20" } 
-        
+
+   Read-only mode by adding :ro, eg docker run -v /path/to/code:/app/code:ro \
+   For example for source code, container should not be able to write and change the code. But make sure to exclude all folders that should be changed by the container during run time. Good practice to clarify things. watch the oder :ro needs to be last of all declared volumes. E.g
+
+    docker run -d --rm -p 3000:80 --name feedback-app -v feedback:/app/feedback -v /app/node_modules -v /app/temp -v "path/to/codebase:/app:ro" volumes:latest
+
+   Inspect via **docker volume inspect VOLUME_NAME**
+
+   Bind VS Copy \
+   Keep in mind most of the volume command are called during a development process. Once the app is finished bind mounts wont be used and hence we still need the copy . . in the docker file
+
 </details>
+
+## Side Notes
+
+**Dockerignore** in order to avoid copying everything. Add an .dockerignore file in the dockerfile folder
+add anything that isnt required by your application to execute correctly
+
+**ARGuments and ENVironment vars**
+Runtime ENV vars, set in dockerfile or via --env on docker run \
+Allows default value but will also allow changed during run command by adding a **--env PORT=8000**
+or specify a .env file in the project folder + **--env-file ./.env** option in run command
+
+Build-time ARG, set on docker build via --build-arg
+Set in docker file via ARG, speficied or changed during build command via **--build-arg DEFAULT_PORT = 8000**

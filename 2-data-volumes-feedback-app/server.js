@@ -59,4 +59,5 @@ app.post('/create', async (req, res) => {
   });
 });
 
-app.listen(80);
+// changed from 80 to process.env.PORT to showcase use of ENV vars
+app.listen(process.env.PORT);
