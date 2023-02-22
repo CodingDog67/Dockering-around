@@ -42,6 +42,11 @@ app.post('/create', async (req, res) => {
   const tempFilePath = path.join(__dirname, 'temp', adjTitle + '.txt');
   const finalFilePath = path.join(__dirname, 'feedback', adjTitle + '.txt');
 
+  // This line is to test the ability of docker to manage real time changes
+  // Should be visible with "docker logs feedback-app", stop, start again is an option
+  // or 
+  console.log('Kiki scolds')
+
   await fs.writeFile(tempFilePath, content);
   exists(finalFilePath, async (exists) => {
     if (exists) {

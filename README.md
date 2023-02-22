@@ -71,9 +71,17 @@ See the volumes:
 
     docker volume ls
 
+Create an anonymous volume: \
+
+    docker run -v /app/data or inside the dockerfile via VOLUME
+
 Create a named volume during first-time running a container: \
 
-    docker run -d -p 3000:80 --rm --name feedback-app -v saved_feedback:/app/feedback feedback
+    docker run -v data:/app/data
+
+Create a Bind Mount: \
+
+    docker run -v /path/to/code:/app/code
 
 Removing Anonymous Volumes: \
 
@@ -85,9 +93,18 @@ Used for presistent/editable data e.g source code
 
 Create a bind mount during via run container command: \
 
-    docker run -d -p 3000:80 --rm --name feedback-app 
-    -v "absolute_path_to_project_folder:/app" feedback
+    docker run -d -p 3000:80 --rm --name feedback-app  -v feedback:/app/feedback -v "absolute_path_to_project_folder:/app" -v /app/node_modules image_name( this is created by npm install)
 
     shortcut: -v "%cd%":/app
-   
-This will override everything in the container app folder with the local machine folder, but that also means everything in the docker file e.g run npm install is rendered useless 
+
+First **-v feedback:/app/feedback** will create a named volume managed by docker for the feedback files. If we omit this we get copies on our local machine as well in the original app/path but this is not desired since we dont want to manage them by ourselves
+
+Second **-v "absolute_path_to_project_folder:/app"** This will override everything in the container app folder with the local machine folder. We use it to sync the code in real time e.g when we change the feedback.html and reload we see the change immediately. But that also means everything in the docker file e.g run npm install is rendered useless.
+
+Third **-v /app/node_modules image_name** To counter the effect of the bind mount previously mentioned, have an anonymous volume running in parallel, longer path wins and gets priority. This will ensure that the npm install content stays alive. 
+
+
+### Side notes
+Code changes to the .js file are not reflected in real time, due to a nodejs specific problem, visit **server.js** and **package.json** to see. In short use a package which watches the file system and restarts the node server whenever sth changes. Add to jsonfile: 
+
+     "devDependencies": {"nodemon":"2.0.20" } 
