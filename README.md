@@ -88,6 +88,8 @@ Removing Anonymous Volumes: \
     docker volume rm VOL_NAME** or **docker volume prune
 
 ### Bind Mounts
+<details>
+     <summary>Expand</summary>
 Managed by yourself = you define folder/path on host machine \
 Used for presistent/editable data e.g source code
 
@@ -108,3 +110,5 @@ Third **-v /app/node_modules image_name** To counter the effect of the bind moun
 Code changes to the .js file are not reflected in real time, due to a nodejs specific problem, visit **server.js** and **package.json** to see. In short use a package which watches the file system and restarts the node server whenever sth changes. Add to jsonfile: 
 
      "devDependencies": {"nodemon":"2.0.20" } 
+
+</details>
