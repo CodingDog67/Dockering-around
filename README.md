@@ -3,14 +3,16 @@
 Indept tutorial with commented sample codes on how to use docker 
 
 ## 1) Images and containers
+Understanding Images and Containers, how to run/start/stop/remove/attached/detach
+
+    1-nodejs-example
+    1-python-rng
+    1- Exercise
+
 <details>
      <summary>Expand</summary>
 
-      Understanding Images and Containers, how to run/start/stop/remove/attached/detach
-
-       1-nodejs-example
-       1-python-rng
-       1- Exercise
+ 
 
    ### Deleting images and containers 
 
@@ -51,12 +53,13 @@ Indept tutorial with commented sample codes on how to use docker
 </details>
 
 ## 2) Data Management, Volumes and Bind Mounts
+Learning how to create Volume and manage data and data survival 
+
+    2-data-volumes-feedback-app
+
 <details>
      <summary>Expand</summary>
-       Learning how to create Volume and manage data and data survival 
-
-       2-data-volumes-feedback-app
-
+     
    Images are read only (Code + Environment), not changeable once built \
    Temp app data (user input) is stored in containers with read/write access. Dynamic, changing and cleared regularly \
    Permanent App data (User accounts eg)fetched/produced in running container, store in files/database/ most not be lost if 
@@ -124,6 +127,18 @@ Indept tutorial with commented sample codes on how to use docker
    Keep in mind most of the volume command are called during a development process. Once the app is finished bind mounts wont be used and hence we still need the copy . . in the docker file
 
 </details>
+
+## Networking 
+
+This chapter will show how containers can communicate to a host machine/the WWW, or short cross container communication.
+
+<details>
+     <summary>Expand</summary>
+
+    Ipsum 
+
+</details>
+
 
 ## Side Notes
 
