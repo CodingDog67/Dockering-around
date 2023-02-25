@@ -7,6 +7,11 @@ const Favorite = require('./models/favorite');
 
 const app = express();
 
+/*
+Web application that wants and returns data
+4 endpoints, get requests, post requests
+*/ 
+
 app.use(bodyParser.json());
 
 app.get('/favorites', async (req, res) => {
@@ -49,6 +54,8 @@ app.post('/favorites', async (req, res) => {
   }
 });
 
+// using a 3rd party API request data and return response to whoever requested
+// sending request from inside the container to www just works,possible to communicate with web APIs and webpages without further tweaking
 app.get('/movies', async (req, res) => {
   try {
     const response = await axios.get('https://swapi.dev/api/films');
@@ -67,6 +74,7 @@ app.get('/people', async (req, res) => {
   }
 });
 
+// this cannot work out of the box since it is a server running on out local host machine or another container
 mongoose.connect(
   'mongodb://localhost:27017/swfavorites',
   { useNewUrlParser: true },

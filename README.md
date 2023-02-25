@@ -128,14 +128,20 @@ Learning how to create Volume and manage data and data survival
 
 </details>
 
-## Networking 
+## 3) Networking 
+Container communication to a service on host machine/the WWW/another container, or in short cross container communication.
 
-This chapter will show how containers can communicate to a host machine/the WWW, or short cross container communication.
+    3-networks-starting-setup
 
 <details>
-     <summary>Expand</summary>
+    <summary>Expand</summary>
 
-    Ipsum 
+    ### Three ways of communications 
+
+    Requesting from inside a container to WWW will just work 
+
+    Requesting to a local machine server needs a change in domain to be understood by docker. \
+    **local host** becomes **host.docker.internal** 
 
 </details>
 
