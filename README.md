@@ -136,12 +136,12 @@ Container communication to a service on host machine/the WWW/another container, 
 <details>
     <summary>Expand</summary>
 
-    ### Three ways of communications 
+### Three ways of communications 
 
-    Requesting from inside a container to WWW will just work 
+Requesting from inside a container to WWW will just work 
 
-    Requesting to a local machine server needs a change in domain to be understood by docker. \
-    **local host** becomes **host.docker.internal** 
+Requesting to a local machine server needs a change in domain to be understood by docker. \
+**local host** becomes **host.docker.internal** 
 
 </details>
 
