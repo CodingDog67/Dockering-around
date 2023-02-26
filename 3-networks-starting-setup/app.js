@@ -74,9 +74,15 @@ app.get('/people', async (req, res) => {
   }
 });
 
-// this cannot work out of the box since it is a server running on out local host machine or another container
+// Option 1) this cannot work out of the box since it is a server running on out local host machine or another container
+// host.docker.internal could work if mongodb is installed on host machine, 
+
+// option 2) hard coding and manual ip finding via docker docker inspect container ( in our case 172.17.0.2)
+
+// option 3) container networks, put the other containers name in here as a domain e.g mongodb which is part of your_network
+
 mongoose.connect(
-  'mongodb://localhost:27017/swfavorites',
+  'mongodb://mongodb:27017/swfavorites',
   { useNewUrlParser: true },
   (err) => {
     if (err) {

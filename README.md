@@ -133,16 +133,35 @@ Container communication to a service on host machine/the WWW/another container, 
 
     3-networks-starting-setup
 
+For visualization of this example get postman and send a get request to localhost:3000/movies \
+send a post request to localhost:3000/favorites choose json format, adding via raw body format {"name": , "type": , "url" :} \
+Check via get request to favorites if it was saved correctly and voila good job
+
 <details>
     <summary>Expand</summary>
 
 ### Three ways of communications 
 
+WWW \
 Requesting from inside a container to WWW will just work 
 
+Local Machine \
 Requesting to a local machine server needs a change in domain to be understood by docker. \
-**local host** becomes **host.docker.internal** 
+**local host** needs to be changed into **host.docker.internal** on the js.script, can be used anywhere where one needs a domain/url like mongodb or html etc etc
 
+Container to Container \
+In our example run an image / mongo from dockerhub in this case. For in depth go to docker hub and read the doc. \
+Hard way, rebuild everytime to adjust to ip change and manual look up: \
+**docker container inspect mongodb** to read out ip address of the container, and use that in the connect part of the js. script\
+
+**Container Networks** for easier and multiple container to container communication. All containers in a docker network can talk to each other and docker will take care of IPs automacially, first create a network, then run containers with the network flag to put them inside the same network.
+Container to container connection does not require any published port 
+
+    docker network create mynetwork-net
+    docker run --network my_network ...
+
+
+Side notes: Network behavior can be set via --driver options, default here is bridge and makes the most sense in most cases, for more info look up more information about docker network drivers
 </details>
 
 
