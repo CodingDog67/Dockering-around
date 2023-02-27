@@ -164,7 +164,14 @@ Container to container connection does not require any published port
 Side notes: Network behavior can be set via --driver options, default here is bridge and makes the most sense in most cases, for more info look up more information about docker network drivers
 </details>
 
+## Multicontainers 
+Building and running multicontainer apps
 
+
+<details>
+    <summary>Expand</summary>
+
+</details>
 ## Side Notes
 
 **Dockerignore** in order to avoid copying everything. Add an .dockerignore file in the dockerfile folder
