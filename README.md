@@ -167,11 +167,25 @@ Side notes: Network behavior can be set via --driver options, default here is br
 ## Multicontainers 
 Building and running multicontainer apps
 
+We base this on an application example app that takes customer goals, saves them and deletes them again if needed. Like a smal goal - to do list. 
+It will run a back and front end and be based on a mongodb server
 
 <details>
     <summary>Expand</summary>
 
+    1) MongoDB Service dockerization\
+    Run of the dockerhub mongodb image:latest will automatically pull the image and build the container. Optional - publish the port as long as backend isnt dockerized this node api will talk to database as if run on local machine
+
+        docker run --name mongodb -d --rm -p 27017:27017 mongo 
+
+
+    2)  Dockerize Backend app.js, refer to file
+
+    3)
+
 </details>
+
+
 ## Side Notes
 
 **Dockerignore** in order to avoid copying everything. Add an .dockerignore file in the dockerfile folder
