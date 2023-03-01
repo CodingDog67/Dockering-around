@@ -168,7 +168,7 @@ Side notes: Network behavior can be set via --driver options, default here is br
 Building and running multicontainer apps
 
 We base this on an application example app that takes customer goals, saves them and deletes them again if needed. Like a smal goal - to do list. 
-It will run a back and front end and be based on a mongodb server
+It will run a back and front end and be based on a mongodb server. End-goal is each container communicating not through a locally published port 
 
 <details>
     <summary>Expand</summary>
@@ -178,10 +178,13 @@ It will run a back and front end and be based on a mongodb server
 
         docker run --name mongodb -d --rm -p 27017:27017 mongo 
 
+    2)  Dockerize Backend  refer to docker file
 
-    2)  Dockerize Backend app.js, refer to file
+        docker run --name goals-back --rm -d -p 80:80 backend_image_name
 
-    3)
+    3) Dockerize Frontend, refer to docker file again, older version might need an -it interactive mode flag during run
+
+        docker run --name react-goals -d --rm  -p 3000:3000 frontend-image_name
 
 </details>
 
