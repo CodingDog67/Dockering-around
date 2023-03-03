@@ -168,29 +168,60 @@ Side notes: Network behavior can be set via --driver options, default here is br
 Building and running multicontainer apps
 
 We base this on an application example app that takes customer goals, saves them and deletes them again if needed. Like a smal goal - to do list. 
-It will run a back and front end and be based on a mongodb server. End-goal is each container communicating not through a locally published port 
+It will run a back and front end and be based on a mongodb server. End-goal is: \
+- Each container communicating not through a locally published port 
+- Database = Data must persist & limited Access
+- Backend = Data persisting, live source code update
+- Frontend = live source code update
 
     4-multi-container-app
     
 <details>
     <summary>Expand</summary>
 
+### Basic set-up
 1) MongoDB Service dockerization 
 Run of the dockerhub mongodb image:latest will automatically pull the image and build the container. Optional - publish the port as long as backend isnt dockerized this node api will talk to database as if run on local machine \
     
-        docker run --name mongodb -d --rm -p 27017:27017 mongo 
+        no network: docker run --name mongodb -d --rm -p 27017:27017 mongo 
 
     
 2)  Dockerize Backend  refer to docker file 
 
-        docker run --name goals-back --rm -d -p 80:80 backend_image_name
+        no network: docker run --name goals-back --rm -d -p 80:80 backend_image_name
 
     
 3) Dockerize Frontend, refer to docker file again, older version might need an -it interactive mode flag during run 
 
-        docker run --name react-goals -d --rm  -p 3000:3000 frontend-image_name
+        no network: docker run --name react-goals -d --rm  -p 3000:3000 frontend-image_name
 
+### Network optimization
+Create a network and run all containers connected to the network w/o port publishing, only the frontend needs publishing because we want to ultimately interact with it on our local host machine. In order to have endpoints in frontend application reachable we need to publish port 80 on the backend application, so that that application is still available on local host, front-end needs to due to how react works. Frontend part that runs in container doesnt care about the network so no network addition necessary
+
+        Docker network create goals-net
+
+        Docker run --name mongodb --rm -d --network goals-net mongo
+
+        Docker run --name goals-back --rm -d --network goals-net -p 80:80 backend_img_name
+
+        Docker run --name goals-front --rm -d -p 3000:3000 -it frontend_img_name
+
+
+### Volume addition 
+
+**Database** \
+If database is stopped, goals are deleted due to container removal. Data needs to be detached, refer to documentation to see that data is stored in :/data/db. Add named volume to secure data, and refer to documentation for authentication/security for limited access
+(if version with volume is run before without credentials delete and restart)
+
+        Docker run --name mongodb --rm -d --network goals-net -v data:/data/db -e MONGO_INITDB_ROOT_USERNAME=username -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
     
+**Backend**
+Log files should persist via named volume in working dir(or bind depends on what you want) and live source code update via bind mount. 
+
+        Docker run --name goals-back --rm -d --network goals-net -p 80:80 -v logs:/app/logs -v full_path:/app -v /app/node_modules backend_img_name
+
+**Frontend**
+
 </details>
 
 

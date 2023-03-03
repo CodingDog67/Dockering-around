@@ -14,7 +14,10 @@ function App() {
       setIsLoading(true);
 
       try {
-        const response = await fetch('http://localhost/goals');
+        // all of this runs in the browser not some server hence we dont need to 
+        // change this into backend_container_name for it to interact in the network
+        // this is how react works, only thing runnning in a docker container is development server, serving this application
+        const response = await fetch('http://localhost/goals'); 
 
         const resData = await response.json();
 

@@ -88,10 +88,10 @@ app.delete('/goals/:id', async (req, res) => {
 // original was localhost 
 // w/o network host.docker.internal
 // else with network = mongodb
-
+// with database security add //[username:password@] and add [?authSource=admin] in the end
 
 mongoose.connect(
-  'mongodb://host.docker.internal:27017/course-goals',
+  'mongodb://ari:kiki@mongodb:27017/course-goals?authSource=admin',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
