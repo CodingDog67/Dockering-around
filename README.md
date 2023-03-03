@@ -164,7 +164,7 @@ Container to container connection does not require any published port
 Side notes: Network behavior can be set via --driver options, default here is bridge and makes the most sense in most cases, for more info look up more information about docker network drivers
 </details>
 
-## Multicontainers 
+## 4) Multicontainers 
 Building and running multicontainer apps
 
 We base this on an application example app that takes customer goals, saves them and deletes them again if needed. Like a smal goal - to do list. 
