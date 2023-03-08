@@ -217,11 +217,14 @@ If database is stopped, goals are deleted due to container removal. Data needs t
     
 **Backend**
 Log files should persist via named volume in working dir(or bind depends on what you want) and live source code update via bind mount. 
+Change app.js to restart server with every change by introducing nodemon, and running via start 
 
-        Docker run --name goals-back --rm -d --network goals-net -p 80:80 -v logs:/app/logs -v full_path:/app -v /app/node_modules backend_img_name
+        Docker run --name goals-back --rm -d --network goals-net -p 80:80 -v logs:/app/logs -v "full_path:/app" -v /app/node_modules -e MONGODB_USERNAME=name -e MONGODB_PASSWORD=password backend_img_name
 
 **Frontend**
+We want live source code update via bind mount 
 
+        Docker run --name goals-front --rm -d -p 3000:3000 -it -v "\full_path_to_src:/app/src" frontend 
 </details>
 
 

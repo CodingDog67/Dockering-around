@@ -1,17 +1,22 @@
 {
+  "_comment": "On a Windowsfilesystem make sure to use -L flag for the start command for nodemon, else it will not restart if something is updated",
   "name": "backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon -L app.js"
   },
-  "author": "Maximilian Schwarzmüller / Academind GmbH",
+  "author": "Maximilian Schwarzmüller",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "mongoose": "^5.10.3",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
   }
 }

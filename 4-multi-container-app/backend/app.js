@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/goals', async (req, res) => {
-  console.log('TRYING TO FETCH GOALS');
+  console.log('TRYING TO FETCH GOALS!');
   try {
     const goals = await Goal.find();
     res.status(200).json({
@@ -87,11 +87,16 @@ app.delete('/goals/:id', async (req, res) => {
 
 // original was localhost 
 // w/o network host.docker.internal
+
 // else with network = mongodb
-// with database security add //[username:password@] and add [?authSource=admin] in the end
+
+// with database security add //[username:password@] infront and add [?authSource=admin] in the end
+
+// final solution would be a dynamic username to change it during docker run for individualization note that ${} is javascript syntax and not docker relevant
+// MUST USE A BACKTICK INSTEAD OF SINGLE QUOTE
 
 mongoose.connect(
-  'mongodb://ari:kiki@mongodb:27017/course-goals?authSource=admin',
+  `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mongodb:27017/course-goals?authSource=admin`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -101,7 +106,7 @@ mongoose.connect(
       console.error('FAILED TO CONNECT TO MONGODB');
       console.error(err);
     } else {
-      console.log('CONNECTED TO MONGODB');
+      console.log('CONNECTED TO MONGODB hello kiki!'); //good place to check if live updates are being applied 
       app.listen(80);
     }
   }

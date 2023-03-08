@@ -8,8 +8,9 @@ function CourseGoals(props) {
   const hasNoGoals = !props.goals || props.goals.length === 0;
 
   return (
-    <section id='course-goals'>
+    <section id='course-goals'>  
       <Card>
+        <h2>Foolish Ambitions</h2>
         {hasNoGoals && <h2>No goals found. Start adding some!</h2>}
         <ul>
           {props.goals.map((goal) => (
