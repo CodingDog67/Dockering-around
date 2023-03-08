@@ -14,11 +14,32 @@ services:
       #- MONGO_INITDB_ROOT_PASSWORD: password  OR
     #networks:
       #-goals-net    # is possible but then mongodb is added to two networks
-  backend:
 
-  frontend:
+  backend:
+    #instead of providing a finished images, all information needed to build am image can also be passed 
+    build: ./backend  
+    #longer version of this is, useful if dockerfile is named differently 
+    #build
+      #context: ./backend
+      #dockerfile: Dockerfile
+      #args: 
+        #some-arg: 1
+    env_file:
+      - ./env/backend.env
+    ports: 
+      - '80:80'
+    volumes:
+      - logs:/app/logs/
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      #express a dependency here, only run if dependency is running
+      - mongodb 
+
+  #frontend:
 
 # all and only named volumes have to be listed extra to be aware or named volumes
 # different containers can use the same volume/same folder on hosting machine
 volumes:
   data:
+  logs:

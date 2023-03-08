@@ -245,6 +245,12 @@ Follows a strict keyword composition and set indentation rules/ docker extention
 - Service children are containers and by default when using docker compose containers are removed upon stopping \
 - Usually no network required because compose will automatically create a new environment for all services specified in compose file and will add them to said network. \
 
+run command is simply 
+     docker-compose up -d
+
+stop and delete all containers and the default network, -v flag to also delete all volumes
+    docker-compose down (-v)
+
 </details>
 
 ## Side Notes
@@ -259,3 +265,11 @@ or specify a .env file in the project folder + **--env-file ./.env** option in r
 
 Build-time ARG, set on docker build via --build-arg
 Set in docker file via ARG, speficied or changed during build command via **--build-arg DEFAULT_PORT = 8000**
+
+**Useful Docker Commands**
+Stopping all containers
+    docker stop $(docker ps -aq)
+
+Removing all images
+    docker image prune -a
+    docker rmi $(docker images -q)
