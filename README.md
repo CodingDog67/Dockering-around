@@ -165,7 +165,7 @@ Side notes: Network behavior can be set via --driver options, default here is br
 </details>
 
 ## 4) Multicontainers 
-Building and running multicontainer apps
+Building and running multicontainer apps - development-only setup!
 
 We base this on an application example app that takes customer goals, saves them and deletes them again if needed. Like a smal goal - to do list. 
 It will run a back and front end and be based on a mongodb server. End-goal is: \
@@ -227,6 +227,25 @@ We want live source code update via bind mount
         Docker run --name goals-front --rm -d -p 3000:3000 -it -v "\full_path_to_src:/app/src" frontend 
 </details>
 
+
+## 5) Elegant Composing and using Utility Containers
+Avoid running endlessly long docker run commands whenever a container is started, using docker compose
+
+continued Example 
+        4-multi-container-app
+
+<details>
+    <summary>Expand</summary>
+
+**Docker Compose**
+It is one config file + orchestration commmands (build, start, stop) to run an application based on x-numbers of containers. Not suited to manage multiple containers on different hosts
+Follows a strict keyword composition and set indentation rules/ docker extention for codes might be helpful.
+
+- Two blanks indicates child parent relationship \
+- Service children are containers and by default when using docker compose containers are removed upon stopping \
+- Usually no network required because compose will automatically create a new environment for all services specified in compose file and will add them to said network. \
+
+</details>
 
 ## Side Notes
 

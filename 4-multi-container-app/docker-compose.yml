@@ -1,0 +1,24 @@
+#services childern are the containers
+version: '3.8'
+services:
+  mongodb:
+    #can also be a custom image
+    image: 'mongo' 
+    volumes:
+      - data:/data/db:rw   # dash needed for single values
+    env_file:
+      - ./env/mongo.env
+    #environment:
+      #- MONGO_INITDB_ROOT_USERNAME=name   OR 
+      #- MONGO_INITDB_ROOT_USERNAME: name   #: indicates yaml objects and dont need dashes
+      #- MONGO_INITDB_ROOT_PASSWORD: password  OR
+    #networks:
+      #-goals-net    # is possible but then mongodb is added to two networks
+  backend:
+
+  frontend:
+
+# all and only named volumes have to be listed extra to be aware or named volumes
+# different containers can use the same volume/same folder on hosting machine
+volumes:
+  data:
