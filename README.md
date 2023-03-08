@@ -133,12 +133,12 @@ Container communication to a service on host machine/the WWW/another container, 
 
     3-networks-starting-setup
 
+<details>
+    <summary>Expand</summary>
+
 For visualization of this example get postman and send a get request to localhost:3000/movies \
 send a post request to localhost:3000/favorites choose json format, adding via raw body format {"name": , "type": , "url" :} \
 Check via get request to favorites if it was saved correctly and voila good job
-
-<details>
-    <summary>Expand</summary>
 
 ### Three ways of communications 
 
@@ -167,7 +167,7 @@ Side notes: Network behavior can be set via --driver options, default here is br
 ## 4) Multicontainers 
 Building and running multicontainer apps - development-only setup!
 
-We base this on an application example app that takes customer goals, saves them and deletes them again if needed. Like a smal goal - to do list. 
+We base this on an application example app that takes customer goals, saves them and deletes them again if needed. Like a small goal - to do list. 
 It will run a back and front end and be based on a mongodb server. End-goal is: \
 - Each container communicating not through a locally published port 
 - Database = Data must persist & limited Access
