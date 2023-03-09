@@ -14,7 +14,7 @@ services:
       #- MONGO_INITDB_ROOT_PASSWORD: password  OR
     #networks:
       #-goals-net    # is possible but then mongodb is added to two networks
-
+    container_name: mongodb
   backend:
     #instead of providing a finished images, all information needed to build am image can also be passed 
     build: ./backend  
@@ -32,11 +32,26 @@ services:
       - logs:/app/logs/
       - ./backend:/app
       - /app/node_modules
+    container_name: backend
     depends_on:
       #express a dependency here, only run if dependency is running
-      - mongodb 
+      - mongodb
+     
 
-  #frontend:
+  frontend:
+    build: ./frontend
+    #image: frontend-goals   this will name your image, if nothing is specified compose will assign a name
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend/src:/app/src
+    #open input option
+    stdin_open: true
+    #attaching this terminal, stdin and tty are equivalent to -it
+    tty: true
+    container_name: frontend
+    depends_on:
+      - backend
 
 # all and only named volumes have to be listed extra to be aware or named volumes
 # different containers can use the same volume/same folder on hosting machine

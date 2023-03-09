@@ -251,6 +251,10 @@ run command is simply
 stop and delete all containers and the default network, -v flag to also delete all volumes
     docker-compose down (-v)
 
+force a rebuild of images with
+    docker-compose --build
+
+all options with docker-compose up --help
 </details>
 
 ## Side Notes
