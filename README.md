@@ -228,11 +228,12 @@ We want live source code update via bind mount
 </details>
 
 
-## 5) Elegant Composing and using Utility Containers
-Avoid running endlessly long docker run commands whenever a container is started, using docker compose
+## 5) Elegant Composing and using "Utility" Containers
+Avoid running endlessly long docker run commands whenever a container is started, using docker compose. This chapter also has a sample project with everything learned so far included. Based on a Laravel & PHP framework. 
 
 continued Example 
         4-multi-container-app
+        6-Laravel-example
 
 <details>
     <summary>Expand</summary>
@@ -245,16 +246,33 @@ Follows a strict keyword composition and set indentation rules/ docker extention
 - Service children are containers and by default when using docker compose containers are removed upon stopping \
 - Usually no network required because compose will automatically create a new environment for all services specified in compose file and will add them to said network. \
 
-run command is simply 
+Run command is simply 
      docker-compose up -d
 
-stop and delete all containers and the default network, -v flag to also delete all volumes
+Stop and delete all containers and the default network, -v flag to also delete all volumes
     docker-compose down (-v)
 
-force a rebuild of images with
+Force a rebuild of images with
     docker-compose --build
 
-all options with docker-compose up --help
+All options with docker-compose up --help
+
+**Utility Container**
+Say we have the case that we need to create a json file, but npm init requires node to be installed, however the entire point of docker is that we dont need to have dependencies on our local machine. Node is an official image on docker though
+
+    docker run -it -d node 
+
+Docker exec command allows to run certain commands inside a running container besides default command. Override default command, which is executable with npm init. Note though that the project is created in the container to which we have no access. But we can create a dockerfile, assign a workdir and mirror that. 
+
+    docker exec -it -v path_to_project:/app node_container_name npm init
+
+Alternatively use a docker compose via run, be aware that containers are not automatically removed, add --rm
+
+    docker-compose run/(exec) service_name command_of_our_choice
+    docker-compose run --rm npm init
+
+
+
 </details>
 
 ## Side Notes
