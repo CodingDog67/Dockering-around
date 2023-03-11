@@ -233,6 +233,7 @@ Avoid running endlessly long docker run commands whenever a container is started
 
 continued Example 
         4-multi-container-app
+
         6-Laravel-example
 
 <details>
@@ -271,6 +272,10 @@ Alternatively use a docker compose via run, be aware that containers are not aut
     docker-compose run/(exec) service_name command_of_our_choice
     docker-compose run --rm npm init
 
+
+**Laravel Example**
+Quick look at laravel reveals that dependencies are a nightmare. Target setup: some host machine folder with source code. Three application containers. One PHP interpreter container to which Host machine folder is exposed. A Nginx web server container, connected to the PHP Interpreter. A MySQL database container is then exposed to the PHP Interpreter as well
+Also we need 2 utility containers. A "composer" container (package manager), a "npm" container and a "Laravel Artisan" container. A total of 6 containers
 
 
 </details>
