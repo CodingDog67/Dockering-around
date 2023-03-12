@@ -2,3 +2,5 @@
 2-data-volumes-feedback-app/temp/kiki.txt
 
 *.env
+
+6-Laravel-example/src/*

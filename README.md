@@ -267,7 +267,7 @@ Docker exec command allows to run certain commands inside a running container be
 
     docker exec -it -v path_to_project:/app node_container_name npm init
 
-Alternatively use a docker compose via run, be aware that containers are not automatically removed, add --rm
+Alternatively use a docker compose via run to run individual containers, be aware that containers are not automatically removed, add --rm
 
     docker-compose run/(exec) service_name command_of_our_choice
     docker-compose run --rm npm init
@@ -277,6 +277,12 @@ Alternatively use a docker compose via run, be aware that containers are not aut
 Quick look at laravel reveals that dependencies are a nightmare. Target setup: some host machine folder with source code. Three application containers. One PHP interpreter container to which Host machine folder is exposed. A Nginx web server container, connected to the PHP Interpreter. A MySQL database container is then exposed to the PHP Interpreter as well
 Also we need 2 utility containers. A "composer" container (package manager), a "npm" container and a "Laravel Artisan" container. A total of 6 containers
 
+Get the official command on laravel and tweak it, . = /var/www/html as root folder
+
+    docker-compose run --rm composer create-project laravel/laravel .
+
+Adjust the .env to use the selected usernames and password set in mysql.env in the ./env folder 
+As to laravel conform use homestead as user and database name
 
 </details>
 
