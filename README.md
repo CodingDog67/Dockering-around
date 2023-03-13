@@ -269,7 +269,7 @@ Docker exec command allows to run certain commands inside a running container be
 
 Alternatively use a docker compose via run to run individual containers, be aware that containers are not automatically removed, add --rm
 
-    docker-compose run/(exec) service_name command_of_our_choice
+    docker-compose run/(exec) service_name command_of_our_choice \
     docker-compose run --rm npm init
 
 
@@ -282,8 +282,31 @@ Get the official command on laravel and tweak it, . = /var/www/html as root fold
     docker-compose run --rm composer create-project laravel/laravel .
 
 Adjust the .env to use the selected usernames and password set in mysql.env in the ./env folder 
-As to laravel conform use homestead as user and database name
+like so 
+    DB_CONNECTION=mysql \
+    DB_HOST=mysql \
+    DB_PORT=3306 \
+    DB_DATABASE=homestead \
+    DB_USERNAME=homestead \
+    DB_PASSWORD= \
 
+Add these to the myself env 
+
+    MYSQL_DATABASE=homestead \
+    MYSQL_USER=homestead \
+    MYSQL_PASSWORD \
+
+run
+
+    docker-compose up -d --build server
+
+to test of initial set-up
+
+run 
+
+    docker-compose run --rm artisan migrate 
+
+to test artisan 
 </details>
 
 ## Side Notes

@@ -3,18 +3,29 @@ version: '3.8'
 services:
   server:
     #webserver
-    image: 'nginx:stable-alpine'
+    #image: 'nginx:stable-alpine'
+
+    #beware context does not only set the folder where docker file is found but also in which the dockerfile is build
+    # . == entire project folder, we need to copy sth (src and nginx) from our entire project folder hence context cannot be dockerfiles
+    build: 
+      context: .
+      dockerfile: dockerfiles/nginx.dockerfile
     ports:
       - '8000:80'
     volumes:
       #look up this path in the dockerhub documentation for the official image
+      # note these are great during development but in deployment we wont have code in php.dockerfile
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./src:var/www/html
+      - ./src:/var/www/html
+    # this allows docker-compose up -d --build server to work without having to specify php and mysyql in addition
+    depends_on:
+      - php
+      - mysql
 
   php:
     build: 
-      context: ./dockerfiles
-      dockerfile: php.dockerfile
+      context: .
+      dockerfile: /dockerfiles/php.dockerfile
       #src code we want to work on, delegated tag: if container should write some data in there it is processed in batches
     volumes:
       - ./src:/var/www/html:delegated
@@ -26,7 +37,7 @@ services:
 
   mysql:
     image: mysql:5.7
-    environment:
+    env_file:
       - ./env/mysql.env
 
   composer: 
@@ -36,5 +47,20 @@ services:
     #ensure we expose source code directory to this image, so it works on the source code directory and when used to install laravel it will do so in the source folder
     volumes:
       - ./src:/var/www/html
-  # artisan:
-  # npm:
+  
+  #needed to run certain level commands
+  artisan:
+    build:
+      context: ./dockerfiles
+      dockerfile: artisan.dockerfile
+    volumes:
+      - ./src:/var/www/html
+    #this will override or add the entrypoint in a dockerfile
+    entrypoint: ["php", "/var/www/html/artisan"]
+      
+  npm:
+    image: node:14
+    working_dir: /var/www/html
+    entrypoint: ["npm"]
+    volumes:
+      - ./src:/var/www/html
