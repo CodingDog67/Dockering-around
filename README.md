@@ -306,8 +306,28 @@ run
 
     docker-compose run --rm artisan migrate 
 
-to test artisan 
+to test artisan. 
+
+Refer heavily to the individual docker files and read the comments there to understand in-depth
 </details>
+
+
+
+## 6) Deployment 
+This chapter will show how to use containers on remote machines/cloud/web 
+
+<details>
+    <summary>Expand</summary>
+
+**Things to look out for**
+- Dont use bind mounts in production
+- Containerized apps might need a build step
+- Multi-container projects might need to be split across multiple hosts/remote machines
+- Trade-offs between control and responsibility (self managed remote host or managed)
+
+
+</details>
+
 
 ## Side Notes
 
