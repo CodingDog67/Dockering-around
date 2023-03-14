@@ -283,18 +283,18 @@ Get the official command on laravel and tweak it, . = /var/www/html as root fold
 
 Adjust the .env to use the selected usernames and password set in mysql.env in the ./env folder 
 like so 
-    DB_CONNECTION=mysql \
-    DB_HOST=mysql \
-    DB_PORT=3306 \
-    DB_DATABASE=homestead \
-    DB_USERNAME=homestead \
-    DB_PASSWORD= \
+    DB_CONNECTION=mysql
+    DB_HOST=mysql 
+    DB_PORT=3306 
+    DB_DATABASE=homestead 
+    DB_USERNAME=homestead 
+    DB_PASSWORD= 
 
 Add these to the myself env 
 
-    MYSQL_DATABASE=homestead \
-    MYSQL_USER=homestead \
-    MYSQL_PASSWORD \
+    MYSQL_DATABASE=homestead 
+    MYSQL_USER=homestead 
+    MYSQL_PASSWORD 
 
 run
 
@@ -325,6 +325,38 @@ This chapter will show how to use containers on remote machines/cloud/web
 - Multi-container projects might need to be split across multiple hosts/remote machines
 - Trade-offs between control and responsibility (self managed remote host or managed)
 
+Be aware of the many many docker hosting providers \
+The three major ones are: aws, azure, google cloud
+
+**Node Example**
+1) Create and launch EC2 instance, go to aws and launch a linux AMI server. Create a Key pair and download the .pem file and move towards project folder
+
+
+2) Connect via ssh or putty on windows, install docker and run container \
+
+    https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html
+    get the host name from starting the instance and looking at the ssh client tab 
+
+Update all pacakges on remote machine, install docker and run it
+
+    sudo yum update -y
+    sudo amazon-linux-extras install docker
+    sudo service docker start 
+
+3) Bring the local image onto that remote machine \
+    Option 1: Deploy source code, copy/push everything onto remote machine and build it there = Too complex! \
+    Option 2: Build image ahead of time locally and deploy built image \
+
+    Push image as learned earlier to dockerhub, remember docker tag can rename images
+        
+        docker push dockerhub_name/deploy_example_name
+
+    On the remote machine run 
+
+        sudo docker run -d --rm -p 80:80 dockerhub_name/deploy_example_name
+
+4) Configure security group to explose all required ports to www \
+Test it by first editing security group the instance belongs to, inbound rules to http from ssh. Run the IPv4 address of the instance in the browser and the node app should be visible
 
 </details>
 
