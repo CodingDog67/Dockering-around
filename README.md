@@ -232,8 +232,7 @@ We want live source code update via bind mount
 Avoid running endlessly long docker run commands whenever a container is started, using docker compose. This chapter also has a sample project with everything learned so far included. Based on a Laravel & PHP framework. 
 
 continued Example 
-        4-multi-container-app
-
+        4-multi-container-app 
         6-Laravel-example
 
 <details>
@@ -316,6 +315,8 @@ Refer heavily to the individual docker files and read the comments there to unde
 ## 6) Deployment 
 This chapter will show how to use containers on remote machines/cloud/web 
 
+    7-easy-node-deploy
+
 <details>
     <summary>Expand</summary>
 
@@ -328,7 +329,7 @@ This chapter will show how to use containers on remote machines/cloud/web
 Be aware of the many many docker hosting providers \
 The three major ones are: aws, azure, google cloud
 
-**Node Example**
+**Node Example - Manual Deployment**
 1) Create and launch EC2 instance, go to aws and launch a linux AMI server. Create a Key pair and download the .pem file and move towards project folder
 
 
@@ -357,6 +358,31 @@ Update all pacakges on remote machine, install docker and run it
 
 4) Configure security group to explose all required ports to www \
 Test it by first editing security group the instance belongs to, inbound rules to http from ssh. Run the IPv4 address of the instance in the browser and the node app should be visible
+
+5) Update the app by building again, uploading and pulling the newest version which is cumbersome 
+
+6) Manual because instance/configuration/connecting/installing Docker had to be done manually. Also since you fully own the remote machine you are responsible for its security, and have to keep essentials software updated/manage security/firewall. Also sshing into machine can be annoying
+
+**Managed Service ECS**
+
+Also use the 7-easy-node-deploy example to play around 
+
+Creation, management, updating is done automatically so monitoring and scaling is simplified. But now one uses Docker + service by cloud provider, follow new rules of that service. Meaning deploying/running containers isnt done via docker commands anymore. Read up on tools cloud provider gives us for the service. 
+
+1) Run the config wizard on custom container configuration and enter details. Port mapping only needs one number since container internal port is automatically mapped to same outside port
+
+Compatability Fargate is a serverless launch mode, no real EC2 instance but instead store container and run settings, whenever there is request container is started up, request is handled and container is stopped again. This can be switched to EC2 mode. 
+
+Load Balancer manages redirecting incoming requests, queue the up and running containers behind scenes, not needed right now. Every task is excecuted by a service
+
+Cluster is the overall network in which our services run. For multicontainer app, one could group multiple containers in one cluster so they can talk to eachother and belong to eachother logically
+
+Once Run we can check the public Ip under details and voila. For updates go to Task-definitions, and create a new revision, leave everything unchanged, create same task again and aws will pull again, select update service under actions (keeping all settings)
+
+**Multicontainer-Deployment**
+We wont use docker-compose for deployment, AWS or Azure need extra information which are not part of the Compose file, compose is great for managing and running multiple containers on the same machine but for cloud services with potentially multiple machines working together we hit the compose limit. 
+
+We need to manually deploy the services. We cannot find container IP by container name feature so this has to be changed first in app.js. If containers are run in same task then they are guaranteed to run on the same machine, but ecs will not create a docker network but will allow to use localhost as address inside container 
 
 </details>
 
