@@ -280,6 +280,7 @@ Get the official command on laravel and tweak it, . = /var/www/html as root fold
 
     docker-compose run --rm composer create-project laravel/laravel .
 
+<<<<<<< Updated upstream
 Adjust the .env to use the selected usernames and password set in mysql.env in the ./env folder 
 like so 
     DB_CONNECTION=mysql
@@ -308,6 +309,15 @@ run
 to test artisan. 
 
 Refer heavily to the individual docker files and read the comments there to understand in-depth
+=======
+Adjust the .env in the in ./src created laravel project, to use the selected usernames and password set in mysql.env in the ./env folder 
+As to laravel conform use homestead as user and database name
+
+Run a pre-test by ignoring compose
+
+    docker-compose up -d server php mysql 
+
+>>>>>>> Stashed changes
 </details>
 
 
