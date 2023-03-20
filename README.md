@@ -280,7 +280,6 @@ Get the official command on laravel and tweak it, . = /var/www/html as root fold
 
     docker-compose run --rm composer create-project laravel/laravel .
 
-<<<<<<< Updated upstream
 Adjust the .env to use the selected usernames and password set in mysql.env in the ./env folder 
 like so 
     DB_CONNECTION=mysql
@@ -309,15 +308,6 @@ run
 to test artisan. 
 
 Refer heavily to the individual docker files and read the comments there to understand in-depth
-=======
-Adjust the .env in the in ./src created laravel project, to use the selected usernames and password set in mysql.env in the ./env folder 
-As to laravel conform use homestead as user and database name
-
-Run a pre-test by ignoring compose
-
-    docker-compose up -d server php mysql 
-
->>>>>>> Stashed changes
 </details>
 
 
@@ -394,6 +384,13 @@ We wont use docker-compose for deployment, AWS or Azure need extra information w
 
 We need to manually deploy the services. We cannot find container IP by container name feature so this has to be changed first in app.js. If containers are run in same task then they are guaranteed to run on the same machine, but ecs will not create a docker network but will allow to use localhost as address inside container 
 
+Create an ECS cluster (surrounding network for containers thereafter). Create a running task and be sure to add "node,app.js" as command in environment since we do not need nodemon for live code updates anymore.
+
+Also add all the environmental variables for mongodb such as username, password and url = localhost (feature from aws), but mongodb in development (docker feature)
+For a second "service" go and add another container during task creation in ecs, in our case mongodb with port 27017 (default port) and also add the env vars MONGO_INITDB_ROOT_USERNA ME and MONGO_INITDB_ROOT_PASSWORD. 
+Set up an application load balancer making sure you use the vpc of the service, IP as target group and port 80 then select it for the task creation.
+
+Task-creation: container name:port goals-backend:80:80 and choose a target group that is the same as the load balancer
 </details>
 
 
