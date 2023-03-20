@@ -388,9 +388,16 @@ Create an ECS cluster (surrounding network for containers thereafter). Create a 
 
 Also add all the environmental variables for mongodb such as username, password and url = localhost (feature from aws), but mongodb in development (docker feature)
 For a second "service" go and add another container during task creation in ecs, in our case mongodb with port 27017 (default port) and also add the env vars MONGO_INITDB_ROOT_USERNA ME and MONGO_INITDB_ROOT_PASSWORD. 
-Set up an application load balancer making sure you use the vpc of the service, IP as target group and port 80 then select it for the task creation.
+Set up an application load balancer making sure you use the vpc of the service, IP as target group and port 80 then select it for the task creation. Unsures we have an unchanging domain
 
 Task-creation: container name:port goals-backend:80:80 and choose a target group that is the same as the load balancer
+
+Update ( in case of code changes) by visiting cluster/services -> select service -> update -> force new deployment -> skip to review -> update service
+
+**EFS volumes**
+Save non-persistent data e.g when we update code and update the service data is lost. Add volume at task definitions -> create new revision -> leave settings -> add volume -> EFS volume, elastic file system -> create new file system -> add vpc ( same as for ecs) costumize-> confirm first page, change network access add security group (create new add to vpc and add inbound rule, NFS source == goals security group) -> add mount point (newly created) to mongodb container click on name to open config and add mount point to new volume. Dont forget to create new task revision to update 
+
+Watch if two mongodb container (update code) write at the same time to the same fiel system it clashes. Manually remove and stop currently running task, so to be deployed task can become active 
 </details>
 
 
