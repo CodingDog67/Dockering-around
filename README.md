@@ -398,6 +398,13 @@ Update ( in case of code changes) by visiting cluster/services -> select service
 Save non-persistent data e.g when we update code and update the service data is lost. Add volume at task definitions -> create new revision -> leave settings -> add volume -> EFS volume, elastic file system -> create new file system -> add vpc ( same as for ecs) costumize-> confirm first page, change network access add security group (create new add to vpc and add inbound rule, NFS source == goals security group) -> add mount point (newly created) to mongodb container click on name to open config and add mount point to new volume. Dont forget to create new task revision to update 
 
 Watch if two mongodb container (update code) write at the same time to the same fiel system it clashes. Manually remove and stop currently running task, so to be deployed task can become active 
+
+**Managed database service**
+AWS RDS (for sql or other relational databases), MongoDB Atlas since you dont have to 
+* Scale and mange availability
+* Deal with perfomance spikes during peaks
+* Take care of backup and security
+
 </details>
 
 
