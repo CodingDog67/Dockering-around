@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/goals', async (req, res) => {
-  console.log('TRYING TO FETCH GOALS');
+  console.log('TRYING TO FETCH GOALS!');
   try {
     const goals = await Goal.find();
     res.status(200).json({
@@ -76,8 +76,7 @@ app.delete('/goals/:id', async (req, res) => {
 });
 
 mongoose.connect(
-  // dont forget to provide the mongodb url env in the env file, cannot simply use mongodb because we wont be relying on docker compose
-  `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_URL}:27017/course-goals?authSource=admin`,
+  `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_URL}/${process.env.MONGODB_NAME}?retryWrites=true&w=majority`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
