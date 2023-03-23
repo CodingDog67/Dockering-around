@@ -1,21 +1,29 @@
-FROM node:14-alpine as build
+# Production docker file
+# can be any name of your choice 
+
+FROM node:14-alpine as build 
 
 WORKDIR /app
 
 COPY package.json .
 
+#needed to generate scripts listed in pacakge.json
 RUN npm install
 
 COPY . .
 
+#run the build script
 RUN npm run build
 
 FROM nginx:stable-alpine
 
+
+#second stage copy everything from first stage, from to 
 COPY --from=build /app/build /usr/share/nginx/html
 
 EXPOSE 80
 
+#start nginx server -g daemon off is run ourselves
 CMD ["nginx", "-g", "daemon off;"]
 
 

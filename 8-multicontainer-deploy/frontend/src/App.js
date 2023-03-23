@@ -4,6 +4,8 @@ import GoalInput from './components/goals/GoalInput';
 import CourseGoals from './components/goals/CourseGoals';
 import ErrorAlert from './components/UI/ErrorAlert';
 
+//switch between two urls depending if we are in production or development
+//production can be found on load balancer -> DNS name 
 const backendUrl =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost'
@@ -82,6 +84,8 @@ function App() {
   async function deleteGoalHandler(goalId) {
     setIsLoading(true);
 
+    //runs in the browser so this will not run inside the container but the browser(end user machine) so we cannot use localhost
+    // if deployed on same server as backend only '/goals/' would suffice but we cannot so we need a different URL
     try {
       const response = await fetch(backendUrl + '/goals/' + goalId, {
         method: 'DELETE',

@@ -408,6 +408,26 @@ AWS RDS (for sql or other relational databases), MongoDB Atlas since you dont ha
 </details>
 
 
+## 7) Multistage Building 
+Building in multiple stages with one Dockerfile
+
+    8-multicontainer-deploy 
+
+<details>
+    <summary>Expand</summary>
+    Stages can copy results(files/folders/etc) from each other e.g one stage builds a file the other serves it. All stages can be build consecutively or individual stages can be selected, skipping stages that come after. 
+
+    See Docker.prod in frontend as a stage example. To build the image base of the dockerfile.prod use -f Dockerfile.prod in the build command. ./frontend = context, frontend/Dockerfile = path to the file
+
+        dockerfile build -f frontend/Dockerfile.prod -t dockerhubid/dockerrepo_name ./frontend
+
+    To deploy create an own frontend task as both cannot be sharing one port to listen to, then create a service based on it
+
+    To use the prod docker to only build the build part add 
+
+        --target stage_name
+</details>
+
 ## Side Notes
 
 **Dockerignore** in order to avoid copying everything. Add an .dockerignore file in the dockerfile folder
