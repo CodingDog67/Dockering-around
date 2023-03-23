@@ -43,7 +43,6 @@ def maxProfit2(costPerCut, salePrice, lengths):
             uniform_rods = rod_length // saleLength
  
             if uniform_rods > 0:
-                extra_cut = 1 if rod_length % saleLength > 0 else 0
                 total_cuts = uniform_rods - int(rod_length % saleLength == 0)
 
                 total_cut_cost = total_cuts * costPerCut

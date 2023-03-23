@@ -1,9 +1,11 @@
 # Dynamic Programming Python implementation of Coin
 # Change problem
 
+import math
 from collections import deque
 from itertools import cycle
-import math
+
+import numpy as np
 
 def count(Step_size, step_num, n):
  
@@ -51,22 +53,6 @@ def maxResult(nums: list[int], k: int) -> int:
             deq.append(i)
         return nums[0]
 
-def maxResult(nums: list[int], k: list) -> int:
-        n = len(nums)
-        deq = deque([n-1])
-        #to start at second to last element
-        index = n-2
-
-        while index != 0:
-            #check if we leave our outer step size limit looking  
-            if deq[0] - i > k: 
-                 deq.popleft()
-            nums[i] += nums[deq[0]]
-            #if there is an index in deq and the if the sum of nums of last step is lower than nums new step disregard that index 
-            while len(deq) and nums[deq[-1]] <= nums[i]: 
-                 deq.pop()
-            deq.append(i)
-        return nums[0]
 
 #stepsize list
 
@@ -105,6 +91,113 @@ def maxResult2(nums: list[int], k: list) -> int:
                  deq.pop()
             deq.append(i)
         return nums[0]
+
+def allmax(a):
+    if len(a) == 0:
+        return []
+    all_ = [0]
+    max_ = a[0]
+    for i in range(1, len(a)):
+        if a[i] > max_:
+            all_ = [i]
+            max_ = a[i]
+        elif a[i] == max_:
+            all_.append(i)
+    return all_
+
+def allmin(a):
+    if len(a) == 0:
+        return []
+    all_ = [0]
+    max_ = a[0]
+    for i in range(1, len(a)):
+        if a[i] < max_:
+            all_ = [i]
+            max_ = a[i]
+        elif a[i] == max_:
+            all_.append(i)
+    return all_
+
+def maxResult_final(nums: list[int], steps: list) -> int:
+    best_index = deque([len(nums)-1]) # starting at the end
+    cur_index = best_index[0]
+    best_value = nums[-1]
+    
+    while cur_index !=0:
+        temp_max_vals = []
+        temp_max_idx = []
+        
+        #update numbers for possible steps taken
+        for step in steps:
+            
+            cur_index = best_index[0] - step
+            temp_max_vals.append(nums[best_index[0]]+nums[cur_index]) #+ future step
+            temp_max_idx.append(cur_index)
+
+        if len(temp_max_idx) ==1:
+            temp_max_vals = temp_max_vals[0]
+            temp_max_idx = temp_max_idx[0]
+
+        range_big = 0
+        range_small = 0
+        #check if num[step] > num[step_smaller] + num[step]
+        for i in range(1, len(steps)):
+            #reached the end
+            start_big_idx = best_index[0] - steps[i]
+            start_small_idx = best_index[0] -steps[i-1]
+            start_big = nums[start_big_idx]
+            start_small = nums[start_small_idx]
+
+            if start_big_idx != 0:
+                range_big = max(nums[max(0, start_big_idx-steps[-1]):start_big_idx])
+            if start_small_idx != 0:
+                range_small = max(nums[max(0, start_small_idx-steps[-1]):start_small_idx])
+
+            if (start_big + range_big) < (start_small + range_small):
+                temp_max_vals = temp_max_vals[i-1]
+                temp_max_idx = temp_max_idx[i-1]
+                break
+            else:
+                temp_max_vals = temp_max_vals[i]
+                temp_max_idx = temp_max_idx[i]
+
+
+        best_index.append(temp_max_idx)
+        # #get all global maxima
+        # temp_max = allmax(temp_max_vals)
+
+        # if len(temp_max) == 1:
+        #     temp_max_idx = temp_max_idx[temp_max[0]]
+        #     temp_max_vals = temp_max_vals[temp_max[0]]
+        #     best_index.append(temp_max_idx)
+
+        # #more than one max or min, if-else to treat case of two identical max_values
+        # else:    
+        #     if temp_max_vals[0] >0:
+        #         # if best value pos take smallest step to maximize gain
+        #         best_index.append(max([temp_max_idx[i] for i in temp_max]))
+        #     else:
+        #         # if best value neg take largest step
+        #         best_index.append(min([temp_max_idx[i] for i in temp_max]))
+        
+        #update to reflect taken step, consider corner case that even though prime jump is better than move 1
+        #sum of move 1 to prime is the worth more
+        # inspect_range = nums[best_index[-1]+1:best_index[0]]
+        # sum_inspect = sum(inspect_range)
+        # if inspect_range and sum_inspect >0:
+        #         nums[best_index[-1]] = nums[best_index[0]] + nums[best_index[-1]] + sum_inspect
+        # else:
+        #     nums[best_index[-1]] = nums[best_index[0]] + nums[best_index[-1]]
+
+        nums[best_index[-1]] = nums[best_index[0]] + nums[best_index[-1]]
+
+        cur_index = best_index[-1]   
+        best_value = nums[best_index[-1]]
+        steps = [x for x in steps if x <= best_index[-1]]
+        
+        best_index.popleft()
+     
+    return best_value
 
 #See if a number is prime
 def is_prime(n:int):
@@ -154,20 +247,31 @@ def create_paths(start:int, steps:list)->list:
 
     return all_paths 
 
-cell_test = [1, 3, 13, 23, 43, 53, 73, 83, 103, 113, 163, 173, 193, 223, 233, 263, 283, 293, 313, 353, 373, 383, 433, 443, 463, 503, 523, 563, 593, 613, 643, 653, 673, 683, 733, 743, 773, 823, 853, 863, 883, 953, 983, 1013, 1033, 1063, 1093, 1103, 1123, 1153, 1163, 1193, 1213, 1223, 1283, 1303, 1373, 1423, 1433, 1453, 1483, 1493, 1523, 1543, 1553, 1583, 1613, 1663, 1693, 1723, 1733, 1753, 1783, 1823, 1873, 1913, 1933, 1973, 1993, 2003, 2053, 2063, 2083, 2113, 2143, 2153, 2203, 2213, 2243, 2273, 2293, 2333, 2383, 2393, 2423, 2473, 2503, 2543, 2593, 2633, 2663, 2683, 2693, 2713, 2753, 2803, 2833, 2843, 2903, 2953, 2963, 3023, 3083, 3163, 3203, 3253, 3313, 3323, 3343, 3373, 3413, 3433, 3463, 3533, 3583, 3593, 3613, 3623, 3643, 3673, 3733, 3793, 3803, 3823, 3833, 3853, 3863, 3923, 3943, 4003, 4013, 4073, 4093, 4133, 4153, 4243, 4253, 4273, 4283, 4363, 4373, 4423, 4463, 4483, 4493, 4513, 4523, 4583, 4603, 4643, 4663, 4673, 4703, 4723, 4733, 4783, 4793, 4813, 4903, 4933, 4943, 4973, 4993, 5003, 5023, 5113, 5153, 5233, 5273, 5303, 5323, 5333, 5393, 5413, 5443, 5483, 5503, 5563, 5573, 5623, 5653, 5683, 5693, 5743, 5783, 5813, 5843, 5903, 5923, 5953, 6043, 6053, 6073, 6113, 6133, 6143, 6163, 6173, 6203, 6263, 6323, 6343, 6353, 6373, 6473, 6553, 6563, 6653, 6673, 6703, 6733, 6763, 6793, 6803, 6823, 6833, 6863, 6883, 6983, 7013, 7043, 7103, 7193, 7213, 7243, 7253, 7283, 7333, 7393, 7433, 7523, 7573, 7583, 7603, 7643, 7673, 7703, 7723, 7753, 7793, 7823, 7853, 7873, 7883, 7933, 7963, 7993, 8053, 8093, 8123, 8233, 8243, 8263, 8273, 8293, 8353, 8363, 8423, 8443, 8513, 8543, 8563, 8573, 8623, 8663, 8693, 8713, 8753, 8783, 8803, 8863, 8893, 8923, 8933, 8963, 9013, 9043, 9103, 9133, 9173, 9203, 9283, 9293, 9323, 9343, 9403, 9413, 9433, 9463, 9473, 9533, 9613, 9623, 9643, 9733, 9743, 9803, 9833, 9883, 9923, 9973]
+#cell = [0, -6, 8, 70, -500, 4, 100, 80, 200, -600, 50]  #302 result
+#cell = [0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 10] #1210 result
+#cell = [0, -1, -1, -1, -1, -1] #-3
+cell = [0, 60, 50, 64, 5, -28, 79, 8, 9, 57] #result 327
+#cell = [0, -472, 475, -160, 21, -6] # result 3
+#cell = [0,5,3,8,9,-5,-9,-10,-8,-6,-30] #result -15
+#cell = [0,-100,-100,-1,0,-1] #-2
+#cell = [0, 90, 6, 5, -6, 2, 9, 2] #result 112
+#cell = [0, 5000, 3, 8]
+#cell = [0, -5, -9, -10, -8, -6, -20] #result 30
 
-n = len(cell_test)
+
+n = len(cell)
 
 ok_jumps = get_jumps(n)
 ok_jumps.insert(0,1)
 
-result = create_paths(n,[1,3])
-
+#result = create_paths(n,[1,3])
+result = maxResult_final(cell, ok_jumps)
+result2 = maxResult(cell, ok_jumps[-1])
 cell = [0,-4,-20,90,-80,100,10]
-k=[1,3]
-k = [a*-1 for a in k]
-#print(maxResult2(cell, k))
-print(maxResult(cell, 3))
+
+ok_jumps = [a*-1 for a in ok_jumps]
+print(maxResult2(cell, ok_jumps))
+
 
 
 ## Driver program to test above function
