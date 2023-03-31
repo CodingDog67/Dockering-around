@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec:
+  replicas: 1
+  selector:
+    matchlabels:
+      app: story
+  template: 
+      metadata:
+        labels:
+          app: story
+    spec:
+      container:
+        -name: story
+        image: dockerhubname/kub-data-demo

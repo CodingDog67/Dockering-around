@@ -1,0 +1,23 @@
+#figure this out be looking up kubernetes deployment yaml if you want to use the latest version
+apiVersion: v1
+# kind of object we want to create
+kind: Service
+# name of object we want to create
+metadata:
+  name: backend
+  labels:
+    group: example
+#define here how an object should be configured
+spec:
+  #only labels can be matches here, ignore tier label to select all apps with that label even without tier
+  selector: 
+    app: second-app
+  ports:
+    - protocol: 'TCP'
+      port: 80
+      targetPort: 8080
+    # - protocol: 'TCP'
+    #   port: 443
+    #   targetPort: 443
+  #Publishing Service type
+  type: LoadBalancer

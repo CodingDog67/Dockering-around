@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: second-app-deployment
+  labels:
+    group: example
+#no need to add kind, template of deployment is always pod
+spec:
+  replicas: 3
+  # selectors and labels
+  selector:
+    #name:value all those with matching values should be controlled by this deployment
+    matchLabels:
+      app: second-app
+      tier: backend
+    #version when we would us match expressions
+    # matchExpressions:
+    #   - {key: app, operator: In, values: [second-app]}
+  template:
+    metadata: 
+      labels:
+        app: second-app
+        tier: backend
+    spec: 
+      containers:
+        - name: second-node
+          image: dockerhub/kub-first-app:2
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080 
+            periodSeconds: 10 
+            initialDelaySeconds: 5 
+          
+        # for multiple containers
+        # - name: ...
+        #   image: ...
