@@ -15,3 +15,29 @@ spec:
       container:
         -name: story
         image: dockerhubname/kub-data-demo
+        # environental key-value pairs, more flexibility we only need to change names here if we want changes
+        env:
+          - name: STORY_FOLDER
+            #value: 'story'
+            valueFrom:
+              configMapKeyRef:
+                name: data-store-env
+                key: folder
+        # bind to the container
+        volumeMounts:
+          - mountPath: /app/story
+          # specify the name of the volume ( important when there are several)
+          - name: story-volume
+      # same level as container 
+      volumes:
+        - name: story-volume
+          presistentVolumeClaim:
+            claimName: host-pvc
+          # uses this as pre-configured if brackets are empty
+          #emptyDir: {}
+
+          # hostPath:
+          #   # path on host machine not the one in container
+          #   path: /data
+          #   type: DirectoryOrCreate
+

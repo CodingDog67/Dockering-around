@@ -73,11 +73,33 @@ To Merge yamls merge and seperate by ---, must be three dashes. Bit more messy b
 
 LivenessProbe to control how kubernetes checks if pods and containers are healthy or not
 
-## Volumes - State
+## Volumes - State - Environmental Vars
 
 State is data created (user generated or app intermediate results) and used by application but which musnt be lost.
 Volume lifetime depends on pod lifetime (survive restart but not removal of pods), we got local volumes (on nodes) and Cloud provider specific Volumes
 
 There is a broad selection of volume types https://kubernetes.io/docs/concepts/storage/volumes/#volume-types that determines how data is stored.
 
-Define volume where pods are configured and defined
+Define volume where pods are configured and defined and bind it to a container. Three useful containers are: \
+    - emptyDir: creates empty directory whenever the pods starts, keeps it alive and filled with data as long as the pod is alive
+    - hostPath : good for multiple replicas, multiple pods can share one and the same path on host machine. (but wont sovle multiple host machines, hostPath is node specific)
+    - CSI: flexible type, interface for various storage solution from other cloud provider. Search for an integration 
+
+Repetitive and hard to administer on a global level
+
+### Persistent Volumes
+
+Not destroyed upon Pod removal, volume detached/independent from pod and pod life cycle, eg clous storage service. One node can have multiple claims to a PV and different claims to different PV on different nodes. Full Flexibilty, standalone cluster resource. 
+Define a host Persistent Volume and a claim, the claim is then made by pods to use the volume.
+
+Use by calling these commands
+
+    kubectl apply -f=host-pv.yaml 
+    kubectl apply -f=host-pvc.yaml
+    kubectl apply -f=deployment.yaml
+
+Kubectl get pv to see all persitent volumes
+
+## Environmental Vars
+
+Define in the Container yaml or as extra env.yaml and apply via kubectl apply -f=environment.yaml

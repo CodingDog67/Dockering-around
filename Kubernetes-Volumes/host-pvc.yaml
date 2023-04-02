@@ -1,0 +1,15 @@
+# can be used by pods to make claim to access the PV
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: host-pvc
+spec:
+  #use the same name of the PV you want to claim, claim by resource is also possible
+  volumeName: host-pv
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  # counter part to the capacity part in PV definition
+  resources:
+    requests: 
+      storage: 1Gi
