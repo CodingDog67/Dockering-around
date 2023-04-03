@@ -24,7 +24,7 @@
 
     kubect get pods
 
-* Expose deployment to service, pending since not deployed on a cloud provider
+* Expose deployment to service, pending since not deployed on a cloud provider. A service will allow two main things, stable address that wont change all the time and can be configured to outside world access.
 
     kubectl expose deployment deployment_name --type=LoadBalancer --port=8080 
 
@@ -100,6 +100,22 @@ Use by calling these commands
 
 Kubectl get pv to see all persitent volumes
 
-## Environmental Vars
+### Environmental Vars
 
 Define in the Container yaml or as extra env.yaml and apply via kubectl apply -f=environment.yaml
+
+## Networking
+
+**Internally to outside pod** you can network via services to allow out of pod request sent inside a pod container. 
+
+**Pod-internal** for multiple containers within a pod. Comunication is done via declaration of a second container within the same pod yaml file. No need to edit service though auth api should not be reachable to the outside world. Localhost is the magic address to use inside the pod.
+
+**Cluster Internal** pod to pod communication via IP address, eg take the ip of the auth service in user deployment instead of local host. Downside you have to manually find out the address and hard code it. 
+
+Or
+
+Kubernetes provides automatically generated environmental variables to get the automatically generated IP Address. process.env.SERVICE_NAME_SERVICE_HOST eg process.env.auth-service becomes AUTH_SERVICE_SERVICE_HOST. to run it with docker, you need to add this new kubernetes env var to the docker compose yaml SERVICE_NAME_SERVICE_HOST: auth and re-build the image and push it.
+
+Or
+
+CoreDNS to create cluster internal domain names for all services. service-name.namespace (default) is the value to use under env in the yaml of the pod that needs to access e.g auth-service.default. Look up other namespaces via kubectl namespace

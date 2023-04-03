@@ -6,7 +6,8 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-const filePath = path.join(__dirname, 'story', 'text.txt');
+//usage of environmental variables
+const filePath = path.join(__dirname, process.env.STORY_FOLDER, 'text.txt');
 
 app.use(bodyParser.json());
 
@@ -32,6 +33,7 @@ app.post('/story', (req, res) => {
   });
 });
 
+// to demonstrate the importance of volumes
 app.get('/error', () => {
   ProcessingInstruction.exit(1);
 })
