@@ -118,4 +118,5 @@ Kubernetes provides automatically generated environmental variables to get the a
 
 Or
 
+Automatic generated domain names \
 CoreDNS to create cluster internal domain names for all services. service-name.namespace (default) is the value to use under env in the yaml of the pod that needs to access e.g auth-service.default. Look up other namespaces via kubectl namespace

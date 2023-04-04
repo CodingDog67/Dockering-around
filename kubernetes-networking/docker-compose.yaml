@@ -15,5 +15,6 @@ services:
       - "8000:8000"
     environment:
       TASKS_FOLDER: tasks
+      # Add this for self defined env var
       AUTH_ADDRESS: auth
     

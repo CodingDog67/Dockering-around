@@ -29,8 +29,11 @@ function App() {
   );
 
   function addTaskHandler(task) {
+    // fetch kubernetes provided IP in dummy attempt 'http:// IP/tasks'
+    // or use reverse proxy as shown below, send a request to ourselves, change seen in nginx.config
     fetch('/api/tasks', {
       method: 'POST',
+      // added to provide authorization 
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer abc',
